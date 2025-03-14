@@ -34,11 +34,11 @@ export const PageLayout = ({ children }: Props): JSX.Element => {
         {/* Pass theme and toggleTheme as props */}
         <Navbar theme={theme} toggleTheme={toggleTheme} />
         <div className="mt-6 flex justify-between items-center">
-          <div className="rounded px-1 sm:px-3 py-2 dark:bg-border flex gap-2 sm:gap-4">
+          <div className="rounded px-1 sm:px-3 py-2 dark:bg-border not-dark:px-0 flex gap-2 sm:gap-4">
             <button
               className={`cursor-pointer px-1.5 sm:px-3 py-1 rounded ${
                 route === "dashboard"
-                  ? "dark:bg-background not-dark:shadow-lg shadow-blue-200"
+                  ? "dark:bg-background not-dark:shadow-lg shadow-blue-200 not-dark:px-2"
                   : ""
               }`}
               onClick={() => setRoute("dashboard")}
@@ -51,7 +51,7 @@ export const PageLayout = ({ children }: Props): JSX.Element => {
             <button
               className={`cursor-pointer px-1.5 sm:px-3 py-1 rounded ${
                 route === "config"
-                  ? "dark:bg-background not-dark:shadow-lg shadow-blue-200"
+                  ? "dark:bg-background not-dark:shadow-lg not-dark:px-2 shadow-blue-200"
                   : ""
               }`}
               onClick={() => setRoute("config")}
@@ -84,7 +84,7 @@ export const PageLayout = ({ children }: Props): JSX.Element => {
           </div>
         </div>
         {/* Render the page within the layout */}
-        {children}
+        <main className="flex flex-col gap-6">{children}</main>
         {/* Modal component */}
         <Modal isOpen={open} onClose={() => setOpen(false)}>
           <div className="flex flex-col gap-3">
