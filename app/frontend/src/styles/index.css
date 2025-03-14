@@ -15,13 +15,16 @@
   --color-secondary-foreground-lg: #F5F9FD;
   --color-muted-lg: #EDF2F7;
   --color-muted-foreground-lg: #64748B;
-  --color-accent-lg: #8B31F7;
+  --color-accent-lg: #f3eafe;
   --color-accent-foreground-lg: #F5F9FD;
   --color-destructive-lg: #F43F5E;
   --color-destructive-foreground-lg: #F5F9FD;
   --color-border-lg: #D9E2EC;
   --color-input-lg: #D9E2EC;
   --color-ring-lg: #8B31F7;
+  --color-checked-lg: #e6f5fe;
+  --color-online-lg: #e7f8f2;
+  --color-offline-lg: #feebef;
   
   --radius: 0.75rem;
 
@@ -37,13 +40,16 @@
   --color-secondary-foreground: #0F172A;
   --color-muted: #1E293B;
   --color-muted-foreground: #94A3B8;
-  --color-accent: #9D4EFF;
+  --color-accent: #26173C;
   --color-accent-foreground: #F5F9FD;
   --color-destructive: #9F1239;
   --color-destructive-foreground: #F5F9FD;
   --color-border: #27272A;
   --color-input: #1E293B;
   --color-ring: #9D4EFF;
+  --color-checked: #092838;
+  --color-online: #08251e;
+  --color-offline: #270b14;
 
   --font-mono: "JetBrains Mono", monospace;
   --font-sans: "Inter", sans-serif;
