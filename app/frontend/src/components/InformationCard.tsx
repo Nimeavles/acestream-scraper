@@ -10,7 +10,7 @@ interface Props {
 export const InformationCard = ({ name, status, icon, className }: Props) => {
   return (
     <div
-      className={`w-full md:flex-1/2 flex items-center gap-5 px-5 py-2 lg:px-7 lg-py:3 rounded ${className}`}
+      className={`w-full md:flex-1/2 flex items-center gap-5 px-5 py-2 lg:px-7 lg-py:3 rounded shadow-xl ${className}`}
     >
       {icon}
       <span className="flex flex-col">

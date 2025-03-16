@@ -3,7 +3,7 @@ import { Activity, CircleAlert, CircleCheckBig, Signal } from "lucide-react";
 
 export const ChannelsInfo = () => {
   return (
-    <section className="flex flex-col md:flex-row gap items-center justify-center mt-6 gap-4">
+    <section className="flex flex-col md:flex-[100%]  md:flex-row gap items-center justify-center mt-6 gap-4">
       <InformationCard
         name="Channels"
         icon={<Signal />}

@@ -29,16 +29,16 @@ export const PageLayout = ({ children }: Props): JSX.Element => {
   }, [theme]);
 
   return (
-    <div className="w-screen font-inter h-screen flex justify-center bg-background-lg dark:bg-background text-black dark:text-white">
+    <div className="w-full min-h-screen font-inter h-full flex justify-center bg-background-lg dark:bg-background text-black dark:text-white">
       <div className="container px-8 md:px-4">
         {/* Pass theme and toggleTheme as props */}
         <Navbar theme={theme} toggleTheme={toggleTheme} />
         <div className="mt-6 flex justify-between items-center">
-          <div className="rounded px-1 sm:px-3 py-2 dark:bg-border not-dark:px-0 flex gap-2 sm:gap-4">
+          <div className="rounded px-2 sm:px-3 py-2 dark:bg-border not-dark:px-0 flex gap-2 sm:gap-4">
             <button
-              className={`cursor-pointer px-1.5 sm:px-3 py-1 rounded ${
+              className={`cursor-pointer px-2 sm:px-3 py-1 rounded ${
                 route === "dashboard"
-                  ? "dark:bg-background not-dark:shadow-lg shadow-blue-200 not-dark:px-2"
+                  ? "dark:bg-background not-dark:shadow-lg shadow-blue-200 not-dark:px-3"
                   : ""
               }`}
               onClick={() => setRoute("dashboard")}
@@ -49,16 +49,17 @@ export const PageLayout = ({ children }: Props): JSX.Element => {
               </span>
             </button>
             <button
-              className={`cursor-pointer px-1.5 sm:px-3 py-1 rounded ${
+              className={`cursor-pointer px-2 sm:px-3 py-1 rounded ${
                 route === "config"
-                  ? "dark:bg-background not-dark:shadow-lg not-dark:px-2 shadow-blue-200"
+                  ? "dark:bg-background not-dark:shadow-lg not-dark:px-3 shadow-blue-200"
                   : ""
               }`}
               onClick={() => setRoute("config")}
             >
               <span className="flex gap-2 items-center">
                 <Cog size={20} />
-                <p>Configuration</p>
+                <p className="md:hidden">Config</p>
+                <p className="hidden md:block">Configuration</p>
               </span>
             </button>
           </div>
@@ -84,7 +85,9 @@ export const PageLayout = ({ children }: Props): JSX.Element => {
           </div>
         </div>
         {/* Render the page within the layout */}
-        <main className="flex flex-col gap-6">{children}</main>
+        <main className="flex flex-col gap-6 md:flex-row md:flex-wrap">
+          {children}
+        </main>
         {/* Modal component */}
         <Modal isOpen={open} onClose={() => setOpen(false)}>
           <div className="flex flex-col gap-3">
