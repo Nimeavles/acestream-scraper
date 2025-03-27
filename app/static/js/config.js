@@ -12,6 +12,8 @@ async function loadConfigData() {
         // Update system info table - only elements that exist on the config page
         if (document.getElementById('configBaseUrl')) 
             document.getElementById('configBaseUrl').textContent = stats.base_url || 'Not configured';
+        if (document.getElementById('configAddPid'))
+            document.getElementById('configAddPid').textContent = stats.addpid === true ? 'Yes' : 'No';
         if (document.getElementById('configAceEngineUrl'))
             document.getElementById('configAceEngineUrl').textContent = stats.ace_engine_url || 'Not configured';
         if (document.getElementById('configRescrapeInterval'))
@@ -21,8 +23,20 @@ async function loadConfigData() {
         if (document.getElementById('configTotalChannels'))
             document.getElementById('configTotalChannels').textContent = stats.total_channels || 0;
         
+        // Set the addPid checkbox value
+        const addPidCheckbox = document.getElementById('addPidCheckbox');
+        if (addPidCheckbox) {
+            addPidCheckbox.checked = stats.addpid === true;
+        }
+        
         // Update Acexy status
         await updateAcexyStatus();
+        
+        // Update Acestream Engine status
+        await updateAcestreamStatus();
+        
+        // Update WARP status
+        await updateWarpUI();
         
         // Load URLs list
         await loadUrlsList();
@@ -77,6 +91,66 @@ async function updateAcexyStatus() {
             acexyStatusElement.className = 'badge bg-warning';
             acexyStatusElement.textContent = 'Error';
         }
+    }
+}
+
+// Update Acestream Engine status in the config page
+async function updateAcestreamStatus() {
+    try {
+        const response = await fetch('/api/config/acestream_status');
+        const data = await response.json();
+        
+        const acestreamStatusElement = document.getElementById('acestreamStatusConfig');
+        const configAcestreamStatus = document.getElementById('configAcexyStatus');
+        const acestreamDetailsElement = document.getElementById('acestreamDetailsConfig');
+        const versionElement = document.getElementById('acestreamVersionConfig');
+        const platformElement = document.getElementById('acestreamPlatformConfig');
+        const networkElement = document.getElementById('acestreamNetworkConfig');
+        
+        if (acestreamStatusElement) {
+            if (data.enabled) {
+                if (data.available) {
+                    acestreamStatusElement.className = 'badge bg-success';
+                    acestreamStatusElement.textContent = 'Online';
+                    
+                    if (acestreamDetailsElement) {
+                        acestreamDetailsElement.classList.remove('d-none');
+                        if (versionElement) versionElement.textContent = data.version || 'Unknown';
+                        if (platformElement) platformElement.textContent = data.platform || 'Unknown';
+                        if (networkElement) networkElement.textContent = data.connected ? 'Connected' : 'Disconnected';
+                    }
+                    
+                    if (configAcestreamStatus) configAcestreamStatus.textContent = 'Enabled and Online';
+                } else {
+                    acestreamStatusElement.className = 'badge bg-danger';
+                    acestreamStatusElement.textContent = 'Offline';
+                    if (acestreamDetailsElement) acestreamDetailsElement.classList.add('d-none');
+                    if (configAcestreamStatus) configAcestreamStatus.textContent = 'Enabled but Offline';
+                }
+            } else {
+                acestreamStatusElement.className = 'badge bg-secondary';
+                acestreamStatusElement.textContent = 'Disabled';
+                if (acestreamDetailsElement) acestreamDetailsElement.classList.add('d-none');
+                if (configAcestreamStatus) configAcestreamStatus.textContent = 'Disabled';
+            }
+        }
+    } catch (error) {
+        console.error('Error checking Acestream Engine status:', error);
+        const acestreamStatusElement = document.getElementById('acestreamStatusConfig');
+        if (acestreamStatusElement) {
+            acestreamStatusElement.className = 'badge bg-warning';
+            acestreamStatusElement.textContent = 'Error';
+        }
+    }
+}
+
+// Check Acestream Engine status with optional loading indicator
+async function checkAcestreamStatus(showLoadingIndicator = false) {
+    try {
+        if (showLoadingIndicator) showLoading();
+        await updateAcestreamStatus();
+    } finally {
+        if (showLoadingIndicator) hideLoading();
     }
 }
 
@@ -177,10 +251,13 @@ function setupConfigEvents() {
             e.preventDefault();
             const baseUrlInput = document.getElementById('baseUrlInput');
             const baseUrl = baseUrlInput.value;
+            const addpid = document.getElementById('addPidCheckbox').checked;
 
             try {
                 showLoading();
-                const response = await fetch('/api/config/base_url', {
+                
+                // Update base URL
+                const responseBaseUrl = await fetch('/api/config/base_url', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -188,13 +265,48 @@ function setupConfigEvents() {
                     body: JSON.stringify({ base_url: baseUrl })
                 });
 
-                if (await handleApiResponse(response, 'Base URL updated successfully')) {
+                // Update addpid setting
+                const responseAddPid = await fetch('/api/config/addpid', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ addpid: addpid })
+                });
+
+                if (await handleApiResponse(responseBaseUrl, 'Base URL updated successfully') && 
+                    await handleApiResponse(responseAddPid, 'PID parameter setting updated successfully')) {
                     baseUrlInput.value = '';
                     await loadConfigData();
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Network error while updating base URL');
+                alert('Network error while updating base URL configuration');
+            } finally {
+                hideLoading();
+            }
+        });
+    }
+
+    // Save addpid when checkbox is changed (separately)
+    const addPidCheckbox = document.getElementById('addPidCheckbox');
+    if (addPidCheckbox) {
+        addPidCheckbox.addEventListener('change', async () => {
+            try {
+                showLoading();
+                const response = await fetch('/api/config/addpid', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ addpid: addPidCheckbox.checked })
+                });
+
+                await handleApiResponse(response, 'PID parameter setting updated successfully');
+                await loadConfigData();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Network error while updating PID parameter setting');
             } finally {
                 hideLoading();
             }
