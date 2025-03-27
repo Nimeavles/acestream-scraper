@@ -10,18 +10,20 @@ export const TableChannelManagment = () => {
       <div className="overflow-x-auto border rounded">
         <table className="w-full">
           <thead className="border-b">
-            <th className="p-2">
-              <p>Name</p>
-            </th>
-            <th className="p-2">
-              <p>ID</p>
-            </th>
-            <th className="p-2">
-              <p>Last Updated</p>
-            </th>
-            <th className="p-2">
-              <p>Actions</p>
-            </th>
+            <tr>
+              <th className="p-2">
+                <p>Name</p>
+              </th>
+              <th className="p-2">
+                <p>ID</p>
+              </th>
+              <th className="p-2">
+                <p>Last Updated</p>
+              </th>
+              <th className="p-2">
+                <p>Actions</p>
+              </th>
+            </tr>
           </thead>
         </table>
         <div className="flex flex-col items-center py-4 gap-4">
