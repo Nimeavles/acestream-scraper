@@ -10,6 +10,7 @@ import { useTheme } from "@/hooks/useDarkTheme";
 import { Navbar } from "./Navbar";
 import { Modal } from "./Modal";
 import { Button } from "./Button";
+import { NavLink } from "react-router";
 
 interface Props {
   children: React.ReactNode;
@@ -35,34 +36,39 @@ export const PageLayout = ({ children }: Props): JSX.Element => {
         <Navbar theme={theme} toggleTheme={toggleTheme} />
         <div className="mt-6 flex justify-between items-center">
           <div className="rounded px-2 sm:px-3 py-2 dark:bg-border not-dark:px-0 flex gap-2 sm:gap-4">
-            <button
-              className={`cursor-pointer px-2 sm:px-3 py-1 rounded ${
-                route === "dashboard"
-                  ? "dark:bg-background not-dark:shadow-lg shadow-blue-200 not-dark:px-3"
-                  : ""
-              }`}
-              onClick={() => setRoute("dashboard")}
-            >
-              <span className="flex gap-1 items-center">
-                <LayoutDashboard size={20} />
-                <p>Dashboard</p>
-              </span>
-            </button>
-            <button
-              className={`cursor-pointer px-2 sm:px-3 py-1 rounded ${
-                route === "config"
-                  ? "dark:bg-background not-dark:shadow-lg not-dark:px-3 shadow-blue-200"
-                  : ""
-              }`}
-              onClick={() => setRoute("config")}
-            >
-              <span className="flex gap-2 items-center">
-                <Cog size={20} />
-                <p className="md:hidden">Config</p>
-                <p className="hidden md:block">Configuration</p>
-              </span>
-            </button>
+            <NavLink to={"/"}>
+              <button
+                className={`cursor-pointer px-2 sm:px-3 py-1 rounded ${
+                  route === "dashboard"
+                    ? "dark:bg-background not-dark:shadow-lg shadow-blue-200 not-dark:px-3"
+                    : ""
+                }`}
+                onClick={() => setRoute("dashboard")}
+              >
+                <span className="flex gap-1 items-center">
+                  <LayoutDashboard size={20} />
+                  <p>Dashboard</p>
+                </span>
+              </button>
+            </NavLink>
+            <NavLink to={"/config"}>
+              <button
+                className={`cursor-pointer px-2 sm:px-3 py-1 rounded ${
+                  route === "config"
+                    ? "dark:bg-background not-dark:shadow-lg not-dark:px-3 shadow-blue-200"
+                    : ""
+                }`}
+                onClick={() => setRoute("config")}
+              >
+                <span className="flex gap-2 items-center">
+                  <Cog size={20} />
+                  <p className="md:hidden">Config</p>
+                  <p className="hidden md:block">Configuration</p>
+                </span>
+              </button>
+            </NavLink>
           </div>
+
           <button
             className="cursor-pointer py-1 md:hidden"
             onClick={() => setOpen(!open)}
