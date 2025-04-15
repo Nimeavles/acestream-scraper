@@ -26,14 +26,16 @@ interface Props {
   placeholder: string;
   className?: string;
   type?: InputTypes;
+  name?: string;
 }
 
-export const Input = ({ placeholder, className, type }: Props) => {
+export const Input = ({ placeholder, className, type, name }: Props) => {
   return (
     <input
       placeholder={placeholder}
       autoComplete="off"
       type={type ?? "text"}
+      name={name}
       className={`p-2.5 border rounded flex-[100%] font-mono dark:text-white text-black ${className}`}
     />
   );

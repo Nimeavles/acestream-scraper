@@ -3,11 +3,11 @@ import { Activity, CircleAlert, CircleCheckBig, Signal } from "lucide-react";
 import { InformationCard } from "@/components/ui/InformationCard";
 import { DataContext } from "@/contexts/DashboardDataContext";
 import { useFetchContext } from "@/hooks/useFetchContext";
-import { ApiStatus } from "@/interfaces/Status";
 import "react-loading-skeleton/dist/skeleton.css";
+import { DashboardData } from "@/interfaces/Dashboard";
 
 export const ChannelsInfo = () => {
-  const { data, error, loading } = useFetchContext<ApiStatus[]>(DataContext);
+  const { data, error, loading } = useFetchContext<DashboardData>(DataContext);
 
   return (
     <section className="flex flex-col md:flex-[100%] md:flex-row gap items-center justify-center mt-6 gap-4">
@@ -23,7 +23,7 @@ export const ChannelsInfo = () => {
               height={20}
             />
           ) : (
-            data[0].total_channels ?? "0"
+            data.stats.total_channels ?? "0"
           )
         }
         className="bg-accent-lg text-fuchsia-300 dark:text-primary border-fuchsia-200 dark:bg-accent border dark:border-primary"
@@ -40,7 +40,7 @@ export const ChannelsInfo = () => {
               height={20}
             />
           ) : (
-            data[0].channels_checked ?? "0"
+            data.stats.channels_checked ?? "0"
           )
         }
         className="dark:bg-checked border dark:border-blue-900 bg-checked-lg border-blue-200 dark:text-blue-800 text-blue-300"
@@ -57,7 +57,7 @@ export const ChannelsInfo = () => {
               height={20}
             />
           ) : (
-            data[0].channels_online ?? "0"
+            data.stats.channels_online ?? "0"
           )
         }
         className="dark:bg-online bg-online-lg border dark:border-green-900 border-green-200 dark:text-green-800 text-green-400"
@@ -74,7 +74,7 @@ export const ChannelsInfo = () => {
               height={20}
             />
           ) : (
-            data[0].channels_offline ?? "0"
+            data.stats.channels_offline ?? "0"
           )
         }
         className="dark:bg-offline bg-offline-lg border dark:border-red-900 border-red-200 dark:text-red-800 text-red-400"

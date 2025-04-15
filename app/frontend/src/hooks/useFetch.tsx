@@ -6,7 +6,7 @@ interface Status<T> {
   data: T | null;
 }
 
-const URI = "http://localhost:8000";
+export const URI = "http://localhost:8000";
 
 const DEFAULT_FETCH_OPTIONS: RequestInit = {
   method: "GET",
@@ -30,8 +30,12 @@ async function fetchOneEndpoint<T>(
  * @param {string | string[]} endpoint - Single URL or an array of URLs.
  * @param {RequestInit} options - Optional fetch options.
  */
+type EndpointMap<T> = {
+  [K in keyof T]: string;
+};
+
 export const useFetch = <T,>(
-  endpoint: string | string[],
+  endpoints: EndpointMap<T>,
   options: RequestInit = DEFAULT_FETCH_OPTIONS
 ) => {
   const [status, setStatus] = useState<Status<T>>({
@@ -44,17 +48,17 @@ export const useFetch = <T,>(
     setStatus({ loading: true, error: null, data: null });
 
     try {
-      if (typeof endpoint === "string") {
-        // Fetch a single endpoint
-        const data = await fetchOneEndpoint<T>(endpoint, options);
-        setStatus({ loading: false, error: null, data });
-      } else if (Array.isArray(endpoint)) {
-        // Fetch multiple endpoints
-        const responses = await Promise.all(
-          endpoint.map((url) => fetchOneEndpoint<T>(url, options))
-        );
-        setStatus({ loading: false, error: null, data: responses as T });
-      }
+      const keys = Object.keys(endpoints) as (keyof T)[];
+      const results = await Promise.all(
+        keys.map((key) => fetchOneEndpoint<T[keyof T]>(endpoints[key], options))
+      );
+
+      const data = keys.reduce((acc, key, i) => {
+        acc[key] = results[i];
+        return acc;
+      }, {} as T);
+
+      setStatus({ loading: false, error: null, data });
     } catch (error) {
       setStatus({
         loading: false,
@@ -62,7 +66,7 @@ export const useFetch = <T,>(
         data: null,
       });
     }
-  }, [endpoint, options]);
+  }, [endpoints, options]);
 
   useEffect(() => {
     fetchData();
