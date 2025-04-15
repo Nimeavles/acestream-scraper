@@ -20,6 +20,10 @@ def create_app(test_config=None):
         task_manager = TaskManager()
         
     app = Flask(__name__)
+
+    #Enable CORS for all domains and all routes
+    from flask_cors import CORS
+    CORS(app, supports_credentials=True)
     
     # Add middleware to handle SSL/proxy headers
     app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
