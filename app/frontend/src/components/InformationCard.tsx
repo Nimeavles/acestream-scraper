@@ -2,7 +2,7 @@ import { JSX } from "react";
 
 interface Props {
   name: string;
-  status: string;
+  status: string | number | null | JSX.Element;
   icon: JSX.Element;
   className?: string;
 }

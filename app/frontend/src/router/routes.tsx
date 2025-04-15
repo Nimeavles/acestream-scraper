@@ -7,6 +7,14 @@ interface Route {
   component: React.ReactNode;
 }
 
+/**
+ * Defines the routes for the application.
+ * Each route has a name, path, and component to be rendered.
+ * 
+ * - "Home" route renders the HomePage component at the root path "/".
+ * - "Config" route renders the ConfigPage component at the path "/config".
+ * - "Not Found" route renders the HomePage component for any unmatched paths.
+ */
 export const ROUTES: Route[] = [
   {
     name: "Home",
