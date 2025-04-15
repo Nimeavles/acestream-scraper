@@ -1,0 +1,1418 @@
+{
+    "openapi": "3.0.0",
+    "x-origin": [
+        {
+            "url": "http://localhost:8000/api/swagger.json",
+            "format": "swagger",
+            "version": "2.0",
+            "converter": {
+                "url": "https://github.com/mermade/oas-kit",
+                "version": "7.0.8"
+            }
+        }
+    ],
+    "paths": {
+        "/channels/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Channel"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Get list of channels, optionally filtered by search term",
+                "operationId": "list_channels",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Filter channels by name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "schema": {
+                            "type": "integer",
+                            "default": 25
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter by status",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "tags": [
+                    "channels"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Channel created"
+                    },
+                    "409": {
+                        "description": "Channel already exists"
+                    }
+                },
+                "summary": "Add a new channel",
+                "operationId": "create_channel",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChannelInput"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "channels"
+                ]
+            }
+        },
+        "/channels/check-status": {
+            "post": {
+                "responses": {
+                    "202": {
+                        "description": "Status check initiated"
+                    }
+                },
+                "summary": "Start background check for all channels",
+                "operationId": "check_all_channels_status",
+                "tags": [
+                    "channels"
+                ]
+            }
+        },
+        "/channels/{channel_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "The channel identifier",
+                    "name": "channel_id",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Channel"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Channel not found"
+                    }
+                },
+                "summary": "Get details for a specific channel",
+                "operationId": "get_channel",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "tags": [
+                    "channels"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Channel deleted"
+                    },
+                    "404": {
+                        "description": "Channel not found"
+                    }
+                },
+                "summary": "Delete a channel",
+                "operationId": "delete_channel",
+                "tags": [
+                    "channels"
+                ]
+            }
+        },
+        "/channels/{channel_id}/check-status": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "The channel identifier",
+                    "name": "channel_id",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusCheckResult"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Channel not found"
+                    }
+                },
+                "summary": "Check online status for a specific channel",
+                "operationId": "check_channel_status",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "tags": [
+                    "channels"
+                ]
+            }
+        },
+        "/config/ace_engine_url": {
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Update Acestream Engine URL",
+                "operationId": "update_ace_engine_url",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AceEngineURL"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "config"
+                ]
+            }
+        },
+        "/config/acestream_status": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AcestreamStatus"
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Get Acestream Engine status",
+                "operationId": "get_acestream_status",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "tags": [
+                    "config"
+                ]
+            }
+        },
+        "/config/acexy_status": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AcexyStatus"
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Get Acexy status",
+                "operationId": "get_acexy_status",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "tags": [
+                    "config"
+                ]
+            }
+        },
+        "/config/addpid": {
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Update whether to add PID parameter to URLs",
+                "operationId": "update_addpid",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddPid"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "config"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Get whether to add PID parameter to URLs",
+                "operationId": "get_addpid",
+                "tags": [
+                    "config"
+                ]
+            }
+        },
+        "/config/base_url": {
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Update base URL for acestream links",
+                "operationId": "update_base_url",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BaseURL"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "config"
+                ]
+            }
+        },
+        "/config/migrate_config": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Migrate settings from config",
+                "description": "json to the database.",
+                "operationId": "migrate_config",
+                "tags": [
+                    "config"
+                ]
+            }
+        },
+        "/config/rescrape_interval": {
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Update URL rescrape interval",
+                "operationId": "update_rescrape_interval",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RescrapeInterval"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "config"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Get current URL rescrape interval",
+                "operationId": "get_rescrape_interval",
+                "tags": [
+                    "config"
+                ]
+            }
+        },
+        "/config/setup_completed": {
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Setup status updated"
+                    }
+                },
+                "summary": "Mark setup as completed",
+                "operationId": "mark_setup_completed",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SetupCompleted"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "config"
+                ]
+            }
+        },
+        "/health/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HealthStatus"
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Get system health status",
+                "operationId": "health_check",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "tags": [
+                    "health"
+                ]
+            }
+        },
+        "/playlists/channels": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Get list of all channels suitable for playlist generation",
+                "operationId": "get_playlist_channels",
+                "tags": [
+                    "playlists"
+                ]
+            }
+        },
+        "/playlists/m3u": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Get M3U playlist of all channels",
+                "operationId": "get_m3u_playlist",
+                "parameters": [
+                    {
+                        "name": "refresh",
+                        "in": "query",
+                        "description": "Whether to refresh the playlist before returning",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Filter channels by name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "playlists"
+                ]
+            }
+        },
+        "/stats/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Stats"
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Get application statistics including URL and channel information",
+                "operationId": "get_stats",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "tags": [
+                    "stats"
+                ]
+            }
+        },
+        "/urls/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/URL"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Get list of all URLs",
+                "operationId": "list_urls",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "tags": [
+                    "urls"
+                ]
+            },
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "URL created and queued for processing"
+                    },
+                    "409": {
+                        "description": "URL already exists"
+                    }
+                },
+                "summary": "Add a new URL to scrape",
+                "operationId": "create_url",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/URLInput"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "urls"
+                ]
+            }
+        },
+        "/urls/refresh": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "URLs queued for refreshing"
+                    }
+                },
+                "summary": "Queue all URLs for refreshing",
+                "operationId": "refresh_all_urls",
+                "tags": [
+                    "urls"
+                ]
+            }
+        },
+        "/urls/{url}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "The URL to manage",
+                    "name": "url",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "URL updated"
+                    },
+                    "404": {
+                        "description": "URL not found"
+                    }
+                },
+                "summary": "Update a URL's properties",
+                "operationId": "update_url",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/URLUpdate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "urls"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/URL"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "URL not found"
+                    }
+                },
+                "summary": "Get details for a specific URL",
+                "operationId": "get_url",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "tags": [
+                    "urls"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "204": {
+                        "description": "URL deleted"
+                    },
+                    "404": {
+                        "description": "URL not found"
+                    }
+                },
+                "summary": "Delete a URL and its associated channels",
+                "operationId": "delete_url",
+                "tags": [
+                    "urls"
+                ]
+            }
+        },
+        "/urls/{url}/refresh": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "The URL to refresh",
+                    "name": "url",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ],
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "URL queued for refreshing"
+                    },
+                    "400": {
+                        "description": "URL is disabled"
+                    },
+                    "404": {
+                        "description": "URL not found"
+                    }
+                },
+                "summary": "Queue a specific URL for refreshing",
+                "operationId": "refresh_url",
+                "tags": [
+                    "urls"
+                ]
+            }
+        },
+        "/warp/connect": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Connected successfully"
+                    },
+                    "403": {
+                        "description": "WARP is not enabled"
+                    },
+                    "500": {
+                        "description": "Connection failed"
+                    }
+                },
+                "summary": "Connect to WARP",
+                "operationId": "connect_warp",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "tags": [
+                    "warp"
+                ]
+            }
+        },
+        "/warp/disconnect": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Disconnected successfully"
+                    },
+                    "403": {
+                        "description": "WARP is not enabled"
+                    },
+                    "500": {
+                        "description": "Disconnection failed"
+                    }
+                },
+                "summary": "Disconnect from WARP",
+                "operationId": "disconnect_warp",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "tags": [
+                    "warp"
+                ]
+            }
+        },
+        "/warp/license": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "License registered successfully"
+                    },
+                    "400": {
+                        "description": "License key not specified"
+                    },
+                    "403": {
+                        "description": "WARP is not enabled"
+                    },
+                    "500": {
+                        "description": "Failed to register license"
+                    }
+                },
+                "summary": "Register a WARP license key",
+                "operationId": "register_warp_license",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LicenseInput"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "warp"
+                ]
+            }
+        },
+        "/warp/mode": {
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Mode set successfully"
+                    },
+                    "400": {
+                        "description": "Invalid mode specified"
+                    },
+                    "403": {
+                        "description": "WARP is not enabled"
+                    },
+                    "500": {
+                        "description": "Failed to set mode"
+                    }
+                },
+                "summary": "Set the WARP mode",
+                "operationId": "set_warp_mode",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ModeInput"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "warp"
+                ]
+            }
+        },
+        "/warp/status": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WarpStatus"
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Get the current status of WARP",
+                "operationId": "get_warp_status",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "description": "An optional fields mask",
+                        "schema": {
+                            "type": "string",
+                            "format": "mask"
+                        }
+                    }
+                ],
+                "tags": [
+                    "warp"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "Acestream Scraper API",
+        "version": "1.0",
+        "description": "REST API for Acestream channels and configurations"
+    },
+    "tags": [
+        {
+            "name": "stats",
+            "description": "Application statistics"
+        },
+        {
+            "name": "config",
+            "description": "Configuration management"
+        },
+        {
+            "name": "channels",
+            "description": "Channel management"
+        },
+        {
+            "name": "urls",
+            "description": "URL management"
+        },
+        {
+            "name": "health",
+            "description": "Health check endpoints"
+        },
+        {
+            "name": "playlists",
+            "description": "Playlist management operations"
+        },
+        {
+            "name": "warp",
+            "description": "Cloudflare WARP management"
+        }
+    ],
+    "servers": [
+        {
+            "url": "/api"
+        }
+    ],
+    "components": {
+        "responses": {
+            "ParseError": {
+                "description": "When a mask can't be parsed"
+            },
+            "MaskError": {
+                "description": "When any error occurs on mask"
+            }
+        },
+        "schemas": {
+            "Stats": {
+                "properties": {
+                    "urls": {
+                        "type": "array",
+                        "description": "List of all tracked URLs",
+                        "items": {
+                            "$ref": "#/components/schemas/URLStats"
+                        }
+                    },
+                    "total_channels": {
+                        "type": "integer",
+                        "description": "Total number of channels"
+                    },
+                    "channels_checked": {
+                        "type": "integer",
+                        "description": "Number of channels with status checked"
+                    },
+                    "channels_online": {
+                        "type": "integer",
+                        "description": "Number of online channels"
+                    },
+                    "channels_offline": {
+                        "type": "integer",
+                        "description": "Number of offline channels"
+                    },
+                    "base_url": {
+                        "type": "string",
+                        "description": "Base URL for playlist generation"
+                    },
+                    "ace_engine_url": {
+                        "type": "string",
+                        "description": "URL of the Acestream Engine"
+                    },
+                    "rescrape_interval": {
+                        "type": "integer",
+                        "description": "Hours between automatic rescans"
+                    },
+                    "addpid": {
+                        "type": "boolean",
+                        "description": "Whether to add PID parameter to URLs"
+                    },
+                    "task_manager_status": {
+                        "type": "string",
+                        "description": "Status of the background task manager"
+                    }
+                },
+                "type": "object"
+            },
+            "URLStats": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "URL being scraped"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Current status of the URL"
+                    },
+                    "last_processed": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "When the URL was last processed"
+                    },
+                    "channel_count": {
+                        "type": "integer",
+                        "description": "Number of channels from this URL"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Whether this URL is enabled"
+                    },
+                    "error_count": {
+                        "type": "integer",
+                        "description": "Number of consecutive errors"
+                    },
+                    "last_error": {
+                        "type": "string",
+                        "description": "Last error message, if any"
+                    }
+                },
+                "type": "object"
+            },
+            "BaseURL": {
+                "required": [
+                    "base_url"
+                ],
+                "properties": {
+                    "base_url": {
+                        "type": "string",
+                        "description": "Base URL for acestream links"
+                    }
+                },
+                "type": "object"
+            },
+            "AceEngineURL": {
+                "required": [
+                    "ace_engine_url"
+                ],
+                "properties": {
+                    "ace_engine_url": {
+                        "type": "string",
+                        "description": "URL for Acestream Engine"
+                    }
+                },
+                "type": "object"
+            },
+            "RescrapeInterval": {
+                "required": [
+                    "hours"
+                ],
+                "properties": {
+                    "hours": {
+                        "type": "integer",
+                        "description": "Hours between automatic rescans"
+                    }
+                },
+                "type": "object"
+            },
+            "AcexyStatus": {
+                "properties": {
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Whether Acexy is enabled"
+                    },
+                    "available": {
+                        "type": "boolean",
+                        "description": "Whether Acexy is available"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Status message"
+                    },
+                    "active_streams": {
+                        "type": "integer",
+                        "description": "Number of active streams"
+                    }
+                },
+                "type": "object"
+            },
+            "SetupCompleted": {
+                "required": [
+                    "completed"
+                ],
+                "properties": {
+                    "completed": {
+                        "type": "boolean",
+                        "description": "Setup completion status"
+                    }
+                },
+                "type": "object"
+            },
+            "AcestreamStatus": {
+                "properties": {
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Whether Acestream Engine is enabled"
+                    },
+                    "available": {
+                        "type": "boolean",
+                        "description": "Whether Acestream Engine is available"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Status message"
+                    },
+                    "version": {
+                        "type": "string",
+                        "description": "Acestream Engine version"
+                    },
+                    "platform": {
+                        "type": "string",
+                        "description": "Platform"
+                    },
+                    "playlist_loaded": {
+                        "type": "boolean",
+                        "description": "Whether playlist is loaded"
+                    },
+                    "connected": {
+                        "type": "boolean",
+                        "description": "Whether engine is connected to network"
+                    }
+                },
+                "type": "object"
+            },
+            "AddPid": {
+                "required": [
+                    "addpid"
+                ],
+                "properties": {
+                    "addpid": {
+                        "type": "boolean",
+                        "description": "Whether to add PID parameter to URLs"
+                    }
+                },
+                "type": "object"
+            },
+            "ChannelInput": {
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Acestream Channel ID"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Channel name"
+                    }
+                },
+                "type": "object"
+            },
+            "Channel": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Acestream Channel ID"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Channel name"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Channel status"
+                    },
+                    "last_processed": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "When the channel was last processed"
+                    },
+                    "is_online": {
+                        "type": "boolean",
+                        "description": "Whether the channel is online"
+                    },
+                    "last_checked": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "When the channel status was last checked"
+                    },
+                    "check_error": {
+                        "type": "string",
+                        "description": "Error message from last check"
+                    },
+                    "group": {
+                        "type": "string",
+                        "description": "Channel group/category"
+                    }
+                },
+                "type": "object"
+            },
+            "StatusCheckResult": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Acestream Channel ID"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Channel name"
+                    },
+                    "is_online": {
+                        "type": "boolean",
+                        "description": "Whether the channel is online"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Channel status: online/offline"
+                    },
+                    "last_checked": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "When the channel status was checked"
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "Error message, if any"
+                    }
+                },
+                "type": "object"
+            },
+            "URLInput": {
+                "required": [
+                    "url"
+                ],
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "URL to scrape"
+                    }
+                },
+                "type": "object"
+            },
+            "URL": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "URL being scraped"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Current status of the URL"
+                    },
+                    "last_scraped": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "When the URL was last processed"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Whether the URL is enabled"
+                    },
+                    "error_count": {
+                        "type": "integer",
+                        "description": "Number of consecutive errors"
+                    },
+                    "last_error": {
+                        "type": "string",
+                        "description": "Last error message, if any"
+                    }
+                },
+                "type": "object"
+            },
+            "URLUpdate": {
+                "properties": {
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Whether the URL is enabled"
+                    }
+                },
+                "type": "object"
+            },
+            "HealthStatus": {
+                "required": [
+                    "app",
+                    "database",
+                    "status"
+                ],
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "System health status"
+                    },
+                    "app": {
+                        "type": "boolean",
+                        "description": "Application status"
+                    },
+                    "database": {
+                        "type": "boolean",
+                        "description": "Database status"
+                    },
+                    "acexy": {
+                        "type": "boolean",
+                        "description": "Acexy service status (if enabled)"
+                    },
+                    "acestream": {
+                        "type": "boolean",
+                        "description": "Acestream Engine status (if enabled)"
+                    },
+                    "task_manager": {
+                        "type": "boolean",
+                        "description": "Task manager status"
+                    },
+                    "details": {
+                        "type": "object",
+                        "description": "Additional status details"
+                    }
+                },
+                "type": "object"
+            },
+            "WarpStatus": {
+                "properties": {
+                    "running": {
+                        "type": "boolean",
+                        "description": "Whether the WARP daemon is running"
+                    },
+                    "connected": {
+                        "type": "boolean",
+                        "description": "Whether WARP is connected"
+                    },
+                    "mode": {
+                        "type": "string",
+                        "description": "Current WARP mode"
+                    },
+                    "account_type": {
+                        "type": "string",
+                        "description": "Account type: free/premium/team"
+                    },
+                    "ip": {
+                        "type": "string",
+                        "description": "Current IP address when connected"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Whether WARP is enabled in the container"
+                    },
+                    "cf_trace": {
+                        "type": "object",
+                        "description": "Cloudflare trace information"
+                    }
+                },
+                "type": "object"
+            },
+            "ModeInput": {
+                "required": [
+                    "mode"
+                ],
+                "properties": {
+                    "mode": {
+                        "type": "string",
+                        "description": "WARP mode to set: warp/dot/proxy/off"
+                    }
+                },
+                "type": "object"
+            },
+            "LicenseInput": {
+                "required": [
+                    "license_key"
+                ],
+                "properties": {
+                    "license_key": {
+                        "type": "string",
+                        "description": "WARP license key to register"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
