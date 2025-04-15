@@ -1,5 +1,5 @@
 import { Plus, Signal } from "lucide-react";
-import { Button } from "../Button";
+import { Button } from "../ui/Button";
 
 export const TableChannelManagment = () => {
   return (

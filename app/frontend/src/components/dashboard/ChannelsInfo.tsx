@@ -1,6 +1,6 @@
 import Skeleton from "react-loading-skeleton";
 import { Activity, CircleAlert, CircleCheckBig, Signal } from "lucide-react";
-import { InformationCard } from "@/components/InformationCard";
+import { InformationCard } from "@/components/ui/InformationCard";
 import { DataContext } from "@/contexts/DashboardDataContext";
 import { useFetchContext } from "@/hooks/useFetchContext";
 import { ApiStatus } from "@/interfaces/Status";
